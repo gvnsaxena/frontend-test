@@ -1,43 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 
-import { fetchProductDetail } from "./utils/api";
+import { fetchProductDetail } from "./utils/api"
 
-import "./ProductDetail.css";
+import "./ProductDetail.css"
 
-function ProductDetail({ productId }) {
-  const [productInfo, setProductInfo] = useState(null);
+const ProductDetail = ({ productId }) => {
+  const [productInfo, setProductInfo] = useState(null)
 
   useEffect(() => {
-    if (!productId) return;
+    if (!productId) return
 
     fetchProductDetail(productId).then((productInfo) =>
       setProductInfo(productInfo)
-    );
-  }, [productId]);
+    ).catch((error) => {
+      console.error(`Error in fetching Product Details: ${error}`)
+    })
+  }, [productId])
 
-  const renderProductInfo = () => {
-    return (
-      <div className="detail-container">
-        <div className="row">
-          <img src={productInfo.image} className="product-image" />
-        </div>
-        <div className="row">
-          <div className="row-title">Name:</div>
-          <div className="row-body">{productInfo.title}</div>
-        </div>
-        <div className="row">
-          <div className="row-title">Name:</div>
-          <div className="row-body">{productInfo.description}</div>
-        </div>
-        <div className="row">
-          <div className="row-title">Price:</div>
-          <div className="row-body">{productInfo.price}</div>
-        </div>
+  return productInfo && (
+    <div className="detail-container">
+      <div className="row">
+        <img tabIndex="0" src={productInfo.image} className="product-image" alt="productimage"/>
       </div>
-    );
-  };
-
-  return productInfo && renderProductInfo();
+      <div className="row">
+        <div tabIndex="0" className="row-title">{productInfo.title}</div>
+      </div>
+      <div className="row">
+        <div tabIndex="0" className="row-body">{productInfo.description}</div>
+      </div>
+      <div className="row">
+        <div tabIndex="0" className="row-title">£{productInfo.price}</div>
+      </div>
+    </div>
+  )
 }
 
-export default ProductDetail;
+export default ProductDetail
